@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 	while (++ln, read_next_line(file, &line_buffer, MAX_LINE_SIZE)) {
 		int r = 0, g = 0, b = 0;
 		bstring m = line_buffer;
-		while (RE_match(cregex, m, &m)) {
+		while (RE_matchc(cregex, m, &m)) {
 			int d = atoi((char*)m.head); // We're not null-terminated, but it's probably fine...
 			switch (m.tail[-1]){
 				case 'r': {
