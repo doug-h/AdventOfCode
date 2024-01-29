@@ -1,84 +1,78 @@
-#include "../fileutils.h"
+#include "../utils.h"
 #include "../types.h"
 
-#define MAX_LINE_SIZE 128
+#include <ctype.h>
 
-static sstring digit_names[9] = {
-    sstring_c("one"),   sstring_c("two"),   sstring_c("three"),
-    sstring_c("four"),  sstring_c("five"),  sstring_c("six"),
-    sstring_c("seven"), sstring_c("eight"), sstring_c("nine")};
 
-bool is_digit(char c) { return (c >= '0' && c <= '9'); }
+static bstring digit_names[9] = {
+    bstring_c("one"),   bstring_c("two"),   bstring_c("three"),
+    bstring_c("four"),  bstring_c("five"),  bstring_c("six"),
+    bstring_c("seven"), bstring_c("eight"), bstring_c("nine")};
 
-int char_to_int(char c) {
-  ASSERT(is_digit(c));
-  return c - '0';
-}
 
-int is_digitname(sstring line) {
-  if (line.len < 3) {
-    return 0;
-  }
-
+int read_digit_name(bstring s) {
   for (int i = 0; i < 9; ++i) {
-    sstring name = digit_names[i];
-    if ((name.len <= line.len) && !memcmp(line.head, name.head, name.len)) {
+    bstring name = digit_names[i];
+    if ((bstring_len(name) <= bstring_len(s)) && !memcmp(s.head, name.head, bstring_len(name))) {
       return i + 1;
     }
   }
   return 0;
 }
 
-int process_line(sstring line) {
-  int value = 0;
-  for (int i = 0; i < line.len; ++i) {
-    char c = line.head[i];
-    if (is_digit(c)) {
-      value = 10 * char_to_int(c);
-      break;
+int find_value(bstring s, int part){
+  if (isdigit(s.head[0])) {
+    return char_to_int(s.head[0]);
+  }
+  if (part == 2) {
+    int d = read_digit_name(s);
+    if (d) {
+      return d;
     }
-    sstring slice = sstring_slice(line, i, line.len);
-    int idx = is_digitname(slice);
-    if (idx) {
-      value = 10 * idx;
+  }
+  return -1;
+}
+
+int process_line(bstring line, int part) {
+  int v1,v2;
+  for (int i = 0; i < bstring_len(line); ++i) {
+    v1 = find_value(bstring_slice(line, i, 0), part);
+    if (v1 != -1){
       break;
     }
   }
-  for (int i = (int)line.len - 1; i >= 0; --i) {
-    char c = line.head[i];
-    if (is_digit(c)) {
-      value += char_to_int(c);
-      break;
-    }
-    sstring slice = sstring_slice(line, i, line.len);
-    int idx = is_digitname(slice);
-    if (idx) {
-      value += idx;
+  for (int i = (int)bstring_len(line) - 1; i >= 0; --i) {
+    v2 = find_value(bstring_slice(line, i, 0), part);
+    if (v2 != -1){
       break;
     }
   }
-  return value;
+  return v1*10+v2;
 }
 
 int main(int argc, char *argv[]) {
-  ASSERT(argc > 1); // Provide input file
 
-  {
-    FILE *file = fopen(argv[1], "r");
-    ASSERT(file); // File failed to open
+  FILE *file = fopen("data.txt", "r");
+  ASSERT(file); // File failed to open
+  int MAX_LINE_SIZE = 128;
+  
+  bstring line;
+  line.head = (u8*)calloc(MAX_LINE_SIZE, 1);
+  ASSERT(line.head); // Failed to allocate string
 
-    int value = 0;
-    sstring line;
-    line.head = calloc(MAX_LINE_SIZE, 1);
-    ASSERT(line.head); // Failed to allocate string
-    while (read_next_line(file, &line, MAX_LINE_SIZE)) {
-      value += process_line(line);
-    }
-
-    free(line.head);
-    printf("%i\n", value);
-    fclose(file);
+  int answer1 = 0, answer2 = 0;
+  while (read_next_line(file, &line, MAX_LINE_SIZE)) {
+    answer1 += process_line(line, 1);
+    answer2 += process_line(line, 2);
   }
+
+  free(line.head);
+  fclose(file);
+
+  ASSERT(answer1 == 56506);
+  printf("%i\n", answer1);
+  ASSERT(answer2 == 56017);
+  printf("%i\n", answer2);
 
   return 0;
 }
