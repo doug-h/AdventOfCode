@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
   free(line.head);
   fclose(file);
 
-  ASSERT(answer1 != 56506);
+  ASSERT(answer1 == 56506);
   printf("%i\n", answer1);
   ASSERT(answer2 == 56017);
   printf("%i\n", answer2);
