@@ -3,7 +3,7 @@ import functools
 @functools.cache
 def possibilities(d):
     if d == '':
-        return 1 
+        return 1
 
     return sum(possibilities(d[i+1:]) for i in range(len(d)) if d[:i+1] in patterns)
 

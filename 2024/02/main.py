@@ -1,6 +1,6 @@
 with open('input.txt') as file:
     differences = lambda l : [b-a for a,b in zip(l[:-1], l[1:])]
-    valid_rule = lambda rule :(all(abs(d) >= 1 and abs(d) <= 3 for d in rule) and 
+    valid_rule = lambda rule :(all(abs(d) >= 1 and abs(d) <= 3 for d in rule) and
                               (all(d > 0 for d in rule) or all(d < 0 for d in rule)))
 
     rules = [[int(i) for i in line.split()] for line in file]

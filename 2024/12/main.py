@@ -6,7 +6,7 @@ with open("input.txt") as file:
     original_grid = "".join(s)
 
     unique_grid = [0] * (W*H)
-    
+
     unvisited = set(range(W*H))
     to_visit = set()
     ID = 0

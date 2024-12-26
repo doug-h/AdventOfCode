@@ -9,13 +9,13 @@ def paths(start_x, start_y, end_x, end_y):
     start = complex(start_x, start_y)
 
     count = 0
-    for (x,y) in [(int(n.real),int(n.imag)) for d in [1,-1,1j,-1j] 
-                  if (n := start+d).real >= 0 and 
-                  n.real < W and 
-                  n.imag >= 0 and 
-                  n.imag < H and 
+    for (x,y) in [(int(n.real),int(n.imag)) for d in [1,-1,1j,-1j]
+                  if (n := start+d).real >= 0 and
+                  n.real < W and
+                  n.imag >= 0 and
+                  n.imag < H and
                   grid[int(n.imag)*W+int(n.real)]==str(height+1)]:
-        count += paths(x,y,end_x,end_y) 
+        count += paths(x,y,end_x,end_y)
     return count
 
 
@@ -24,10 +24,10 @@ def update_flood(height,poss):
     next_poss = set()
     for p in poss:
         flood[int(p.imag)][int(p.real)] += 1
-        for neighbour in [n for d in [1,-1,1j,-1j] if (n := p+d).real >= 0 and 
-                          n.real < W and 
-                          n.imag >= 0 and 
-                          n.imag < H and 
+        for neighbour in [n for d in [1,-1,1j,-1j] if (n := p+d).real >= 0 and
+                          n.real < W and
+                          n.imag >= 0 and
+                          n.imag < H and
                           grid[int(n.imag)*W+int(n.real)]==str(height-1)]:
             next_poss.add(neighbour)
     if(height > 0):
@@ -45,9 +45,9 @@ with open("input.txt") as file:
             index = row*W + col
             if(grid[index] == '9'):
                 update_flood(9, [complex(col, row)])
-    #answer1 = sum(flood[row][col] 
-    #              for row in range(H) 
-    #              for col in range(W) 
+    #answer1 = sum(flood[row][col]
+    #              for row in range(H)
+    #              for col in range(W)
     #              if grid[row*W+col] == '0')
     #print(answer1)
     inds_0 = [(i,j) for i in range(W) for j in range(H) if grid[j*W+i] == '0']

@@ -30,7 +30,7 @@ def loops(start_index, start_dir, extra_block_index):
 
         jump = blocks[d][i]
         limit = [i%W,i-(i%W)+W-1,i%W+W*(H-1),i-(i%W)]
-        if((jump != -1 and extra_block_index in range(i, jump, warps[d])) or 
+        if((jump != -1 and extra_block_index in range(i, jump, warps[d])) or
            (jump == -1 and extra_block_index in range(i, limit[d]+1, warps[d]))):
             #print(jump%W,jump//W, extra_block_index%W, extra_block_index//W,"hit extra rock")
             jump = extra_block_index

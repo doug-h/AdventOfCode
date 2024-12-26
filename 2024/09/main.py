@@ -19,7 +19,7 @@ with open("input.txt") as file:
             break
         expanded[block],expanded[first_space] = expanded[first_space],expanded[block]
     answer1 = sum(int(c)*i for i,c in enumerate(expanded) if c != '.')
-    
+
     files = [[ID,int(size),int(gap)] for (ID,size),gap in zip(enumerate(s[::2]), s[1::2]+"0")]
 
     for ID in reversed(range(len(files))):

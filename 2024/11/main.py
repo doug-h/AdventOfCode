@@ -4,7 +4,7 @@ def step():
     global rocks
     new_rocks = Counter()
     for value,count in rocks.items():
-        if value == 0: 
+        if value == 0:
             new_rocks[1] += count
         elif (n := len(s := str(value))) % 2 == 0:
             new_rocks[int(s[:n//2])] += count

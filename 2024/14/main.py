@@ -1,7 +1,7 @@
 import re,math
 
 with open("input.txt") as file:
-    W = 101 
+    W = 101
     H = 103
 
     robots = [list(map(int,re.match(R"p\=(-?\d+),(-?\d+) v\=(-?\d+),(-?\d+)", m).groups())) for m in file.read().splitlines()]

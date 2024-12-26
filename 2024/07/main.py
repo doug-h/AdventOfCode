@@ -1,8 +1,8 @@
 import re
-import math 
+import math
 
 def valid_forms(target,values):
-    
+
     forms = [values]
     for _ in range(len(values)-1):
         new_forms = []

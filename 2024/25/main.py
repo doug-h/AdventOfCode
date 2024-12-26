@@ -1,8 +1,8 @@
 def fits(key,lock):
     for p1,p2 in zip(key,lock):
         if p1+p2 > 5:
-            return False 
-    return True 
+            return False
+    return True
 
 with open("input.txt") as file:
     blocks = keys,locks = [[],[]]

@@ -20,7 +20,7 @@ with open("input.txt") as file:
     wrong = set()
     for out,(in1,in2,op) in gates.items():
         usages = set(v[2] for v in gates.values() if out in v[:2])
-        if in1[0] in "xy" and in1[1:] != '00': 
+        if in1[0] in "xy" and in1[1:] != '00':
             if op == 'XOR' and usages != set(['XOR','AND']):
                 wrong.add(out)
             if op == 'AND' and usages != set(['OR']):
